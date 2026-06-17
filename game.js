@@ -239,8 +239,10 @@ class GameEngine {
         // Keyboard controls
         window.addEventListener('keydown', e => {
             this.keys[e.key] = true;
+            if ([' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault(); // prevent browser scrolling
+            }
             if (e.key === ' ' || e.key === 'ArrowUp') {
-                e.preventDefault(); // prevent scroll
                 this.handleActionKey();
             }
         });
@@ -444,17 +446,19 @@ class GameEngine {
         this.paddle.width = (this.activePowerups.wide > now) ? this.paddleWidthWide : this.paddleWidthNormal;
         
         // 2. Update paddle position
-        if (this.pointerX !== null) {
-            // Mouse/Touch control
-            this.paddle.x = this.pointerX - this.paddle.width / 2;
-        } else {
-            // Keyboard control
+        const isKeyboardMoving = this.keys['ArrowLeft'] || this.keys['a'] || this.keys['ArrowRight'] || this.keys['d'];
+        if (isKeyboardMoving) {
+            // Keyboard control takes precedence; reset pointerX so the paddle doesn't jump back when keys are released
+            this.pointerX = null;
             if (this.keys['ArrowLeft'] || this.keys['a']) {
                 this.paddle.x -= this.paddle.speed;
             }
             if (this.keys['ArrowRight'] || this.keys['d']) {
                 this.paddle.x += this.paddle.speed;
             }
+        } else if (this.pointerX !== null) {
+            // Mouse/Touch control
+            this.paddle.x = this.pointerX - this.paddle.width / 2;
         }
         
         // Keep paddle in bounds
