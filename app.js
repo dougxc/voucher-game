@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnStartGame = document.getElementById('btn-start-game');
     
     // Game Control Buttons
-    const btnBackSetup = document.getElementById('btn-back-setup');
     const btnToggleSound = document.getElementById('btn-toggle-sound');
     const soundOnIcon = document.getElementById('sound-on-icon');
     const soundOffIcon = document.getElementById('sound-off-icon');
@@ -425,12 +424,6 @@ document.addEventListener('DOMContentLoaded', () => {
         game.playSynth(300, 0.05);
     });
     
-    btnBackSetup.addEventListener('click', () => {
-        if (confirm("Are you sure you want to exit the game? Your current progress will be lost.")) {
-            window.location.hash = '';
-            showSetupMode();
-        }
-    });
     
     btnToggleSound.addEventListener('click', () => {
         if (game) {
