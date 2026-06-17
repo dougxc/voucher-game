@@ -517,30 +517,29 @@ body {
     backdrop-filter: blur(12px);
     display: flex;
     justify-content: center;
-    align-items: center;
+    overflow-y: auto;
     z-index: 10;
     animation: fadeIn 0.3s ease-out;
+}
+
+/* Custom scrollbar for game start overlay */
+.canvas-overlay::-webkit-scrollbar {
+    width: 6px;
+}
+.canvas-overlay::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+}
+.canvas-overlay::-webkit-scrollbar-thumb {
+    background: var(--color-neon-purple);
+    border-radius: 3px;
 }
 
 .overlay-content {
     text-align: center;
     max-width: 500px;
-    max-height: 100%;
-    overflow-y: auto;
-    padding: 1.5rem 2rem;
+    margin: auto;
+    padding: 1.2rem 1.5rem;
     box-sizing: border-box;
-}
-
-/* Custom scrollbar for game start overlay content */
-.overlay-content::-webkit-scrollbar {
-    width: 6px;
-}
-.overlay-content::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
-}
-.overlay-content::-webkit-scrollbar-thumb {
-    background: var(--color-neon-purple);
-    border-radius: 3px;
 }
 
 .sender-tag {
@@ -549,14 +548,14 @@ body {
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--color-neon-purple);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 
 .overlay-content h2 {
     font-family: var(--font-heading);
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 900;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     letter-spacing: 1px;
     color: #fff;
     text-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
@@ -566,11 +565,11 @@ body {
     font-style: italic;
     background: rgba(255, 255, 255, 0.04);
     border-radius: 12px;
-    padding: 1.2rem;
+    padding: 0.8rem 1rem;
     border: 1px solid rgba(255, 255, 255, 0.06);
     color: var(--text-secondary);
     line-height: 1.6;
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.8rem;
 }
 
 .instructions-card {
@@ -578,8 +577,8 @@ body {
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 10px;
-    padding: 1.2rem;
-    margin-bottom: 1.2rem;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
 }
 
 .instructions-card h3 {
@@ -588,7 +587,7 @@ body {
     font-weight: 700;
     color: var(--text-muted);
     letter-spacing: 1px;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.4rem;
     text-transform: uppercase;
 }
 
