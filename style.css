@@ -967,3 +967,65 @@ body {
         font-size: 1.3rem;
     }
 }
+
+/* ==========================================================================
+   LANGUAGE SELECTOR STYLES
+   ========================================================================== */
+.start-language-selector {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.start-language-selector .lang-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border-radius: 6px;
+    padding: 0.4rem 0.9rem;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.start-language-selector .lang-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.start-language-selector .lang-btn.active {
+    background: rgba(0, 240, 255, 0.12);
+    color: var(--color-neon-blue);
+    border-color: var(--color-neon-blue);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+/* Creator select styling */
+#gift-language {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.9rem 1.2rem;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    outline: none;
+}
+
+#gift-language:focus {
+    border-color: var(--color-neon-purple);
+    background: rgba(138, 43, 226, 0.05);
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.25);
+}
+
+#gift-language option {
+    background: var(--bg-darker);
+    color: var(--text-primary);
+}

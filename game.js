@@ -77,6 +77,36 @@ class GameEngine {
         
         // Bind event listeners
         this.initEventListeners();
+        
+        // Translation state
+        this.currentLanguage = 'en';
+        this.translations = {
+            en: {
+                launchPrompt: "PRESS SPACE / TAP TO LAUNCH",
+                powerup_wide: "WIDE PADDLE",
+                powerup_slow: "SLOW MOTION",
+                powerup_laser: "LASER BLASTER",
+                powerup_shield: "SHIELD BARRIER"
+            },
+            de: {
+                launchPrompt: "LEERTASTE DRÜCKEN / TIPPEN ZUM STARTEN",
+                powerup_wide: "BREITES PADDEL",
+                powerup_slow: "ZEITLUPE",
+                powerup_laser: "LASERBLASTER",
+                powerup_shield: "SCHILDBARRIERE"
+            },
+            ru: {
+                launchPrompt: "НАЖМИ ПРОБЕЛ ИЛИ КАСАНИЕ ДЛЯ ЗАПУСКА",
+                powerup_wide: "ШИРОКАЯ ПЛАТФОРМА",
+                powerup_slow: "ЗАМЕДЛЕНИЕ",
+                powerup_laser: "ЛАЗЕРНЫЙ БЛАСТЕР",
+                powerup_shield: "ЗАЩИТНЫЙ БАРЬЕР"
+            }
+        };
+    }
+    
+    setLanguage(lang) {
+        this.currentLanguage = lang || 'en';
     }
     
     // ==========================================================================
@@ -872,10 +902,10 @@ class GameEngine {
         if (existing) existing.remove();
         
         const names = {
-            wide: 'WIDE PADDLE',
-            slow: 'SLOW MOTION',
-            laser: 'LASER BLASTER',
-            shield: 'SHIELD BARRIER'
+            wide: this.translations[this.currentLanguage]?.powerup_wide || 'WIDE PADDLE',
+            slow: this.translations[this.currentLanguage]?.powerup_slow || 'SLOW MOTION',
+            laser: this.translations[this.currentLanguage]?.powerup_laser || 'LASER BLASTER',
+            shield: this.translations[this.currentLanguage]?.powerup_shield || 'SHIELD BARRIER'
         };
         
         const bar = document.createElement('div');
@@ -1143,7 +1173,8 @@ class GameEngine {
                 this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
                 this.ctx.font = 'bold 10px Orbitron';
                 this.ctx.textAlign = 'center';
-                this.ctx.fillText('PRESS SPACE / TAP TO LAUNCH', this.canvas.width / 2, this.paddle.y - 25);
+                const promptText = this.translations[this.currentLanguage]?.launchPrompt || 'PRESS SPACE / TAP TO LAUNCH';
+                this.ctx.fillText(promptText, this.canvas.width / 2, this.paddle.y - 25);
             }
         });
         

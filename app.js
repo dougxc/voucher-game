@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const giftCodeInput = document.getElementById('gift-code');
     const giftStoreInput = document.getElementById('gift-store');
     const giftSenderInput = document.getElementById('gift-sender');
+    const giftLanguageSelect = document.getElementById('gift-language');
     const giftMessageInput = document.getElementById('gift-message');
     
     // Share elements
@@ -62,6 +63,160 @@ document.addEventListener('DOMContentLoaded', () => {
     let revealedCount = 0;
     
     // ==========================================================================
+    // TRANSLATIONS & LOCALIZATION
+    // ==========================================================================
+    const TRANSLATIONS = {
+        en: {
+            hudStore: "STORE / GIFT",
+            hudScore: "SCORE",
+            hudBricks: "BRICKS LEFT",
+            hudLives: "LIVES",
+            giftFrom: "A Gift From",
+            howToPlay: "How to Play:",
+            instMove: "or Mouse / Touch to move the paddle",
+            instLaunch: "or Click to launch ball / shoot lasers",
+            instPowerupsPrefix: "Catch falling items for glowing",
+            instPowerupsHighlight: "Power-Ups",
+            instPowerupsSuffix: "!",
+            btnStart: "Start Game",
+            trayTitle: "YOUR VOUCHER CODE",
+            trayTip: "Break glowing letters in the grid to reveal code digits!",
+            btnBack: "Back to Setup",
+            gameOverBadge: "GAME OVER",
+            gameOverTitle: "Almost Had It!",
+            gameOverText: "Don't worry, you can try again! Or, since this is a gift, you can choose to reveal the voucher code directly.",
+            revealedProgressLabel: "Revealed so far:",
+            btnReveal: "Just Reveal Code",
+            btnRetry: "Try Again",
+            victoryBadge: "CONGRATULATIONS!",
+            victoryTitle: "Voucher Unlocked",
+            voucherCodeLabel: "VOUCHER CODE",
+            btnCopy: "Copy Code",
+            btnPlayAgain: "Play Again",
+            launchPrompt: "PRESS SPACE / TAP TO LAUNCH",
+            charactersRevealed: "{count} / 12 characters revealed",
+            defaultMessage: "Break the bricks to unlock your voucher code!",
+            defaultSender: "Someone",
+            defaultSenderVictory: "A Special Gift For You",
+            defaultMessageVictory: "Enjoy your gift!",
+            copiedText: "Copied!",
+            copiedCodeBtn: "Copied!"
+        },
+        de: {
+            hudStore: "GESCHÄFT / GESCHENK",
+            hudScore: "PUNKTESTAND",
+            hudBricks: "STEINE ÜBRIG",
+            hudLives: "LEBEN",
+            giftFrom: "Ein Geschenk von",
+            howToPlay: "Spielanleitung:",
+            instMove: "oder Maus / Touch, um das Paddel zu bewegen",
+            instLaunch: "oder Klick, um den Ball zu starten / Laser zu schießen",
+            instPowerupsPrefix: "Fange fallende Gegenstände für leuchtende",
+            instPowerupsHighlight: "Power-Ups",
+            instPowerupsSuffix: "!",
+            btnStart: "Spiel starten",
+            trayTitle: "DEIN GUTSCHEINCODE",
+            trayTip: "Brich leuchtende Buchstaben im Gitter, um Codestellen zu enthüllen!",
+            btnBack: "Zurück zum Setup",
+            gameOverBadge: "SPIEL VORBEI",
+            gameOverTitle: "Fast geschafft!",
+            gameOverText: "Keine Sorge, du kannst es noch einmal versuchen! Oder da dies ein Geschenk ist, kannst du den Gutscheincode direkt enthüllen.",
+            revealedProgressLabel: "Bisher enthüllt:",
+            btnReveal: "Code direkt enthüllen",
+            btnRetry: "Nochmal versuchen",
+            victoryBadge: "HERZLICHEN GLÜCKWUNSCH!",
+            victoryTitle: "Gutschein freigeschaltet",
+            voucherCodeLabel: "GUTSCHEINCODE",
+            btnCopy: "Code kopieren",
+            btnPlayAgain: "Nochmal spielen",
+            launchPrompt: "LEERTASTE DRÜCKEN / TIPPEN ZUM STARTEN",
+            charactersRevealed: "{count} von 12 Zeichen enthüllt",
+            defaultMessage: "Brich die Steine, um deinen Gutscheincode freizuschalten!",
+            defaultSender: "Jemand",
+            defaultSenderVictory: "Ein besonderes Geschenk für dich",
+            defaultMessageVictory: "Viel Spaß mit deinem Geschenk!",
+            copiedText: "Kopiert!",
+            copiedCodeBtn: "Kopiert!"
+        },
+        ru: {
+            hudStore: "МАГАЗИН / ПОДАРОК",
+            hudScore: "СЧЕТ",
+            hudBricks: "ОСТАЛОСЬ КИРПИЧЕЙ",
+            hudLives: "ЖИЗНИ",
+            giftFrom: "Подарок от",
+            howToPlay: "Как играть:",
+            instMove: "или мышь / касание для перемещения платформы",
+            instLaunch: "или клик для запуска шара / стрельбы лазером",
+            instPowerupsPrefix: "Лови падающие предметы для супер-способностей",
+            instPowerupsHighlight: "Power-Ups",
+            instPowerupsSuffix: "!",
+            btnStart: "Начать игру",
+            trayTitle: "ТВОЙ КОД ВАУЧЕРА",
+            trayTip: "Разбивай светящиеся буквы, чтобы открыть символы кода!",
+            btnBack: "Назад к настройкам",
+            gameOverBadge: "ИГРА ОКОНЧЕНА",
+            gameOverTitle: "Почти получилось!",
+            gameOverText: "Не волнуйся, ты можешь попробовать снова! Или, так как это подарок, ты можешь открыть код ваучера сразу.",
+            revealedProgressLabel: "Открыто символов:",
+            btnReveal: "Просто открыть код",
+            btnRetry: "Попробовать снова",
+            victoryBadge: "ПОЗДРАВЛЯЕМ!",
+            victoryTitle: "Ваучер разблокирован",
+            voucherCodeLabel: "КОД ВАУЧЕРА",
+            btnCopy: "Копировать код",
+            btnPlayAgain: "Играть снова",
+            launchPrompt: "НАЖМИ ПРОБЕЛ ИЛИ КАСАНИЕ ДЛЯ ЗАПУСКА",
+            charactersRevealed: "Открыто {count} из 12 символов",
+            defaultMessage: "Разбей кирпичи, чтобы получить код ваучера!",
+            defaultSender: "Кто-то",
+            defaultSenderVictory: "Особый подарок для тебя",
+            defaultMessageVictory: "Наслаждайся своим подарком!",
+            copiedText: "Скопировано!",
+            copiedCodeBtn: "Скопировано!"
+        }
+    };
+
+    let currentLanguage = 'en';
+
+    function setLanguage(lang) {
+        if (!TRANSLATIONS[lang]) lang = 'en';
+        currentLanguage = lang;
+        
+        // Update elements with data-i18n
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            const val = TRANSLATIONS[lang][key];
+            if (val) {
+                el.textContent = val;
+            }
+        });
+        
+        // Update language buttons active class
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        
+        // Update start overlay text placeholders if not custom
+        if (currentPayload) {
+            const isCustomMsg = currentPayload.m && currentPayload.m.trim().length > 0;
+            overlayGiftMessage.textContent = isCustomMsg ? `"${currentPayload.m}"` : `"${TRANSLATIONS[lang].defaultMessage}"`;
+            
+            const isCustomSender = currentPayload.n && currentPayload.n.trim().length > 0;
+            giftFromUser.textContent = isCustomSender ? currentPayload.n : TRANSLATIONS[lang].defaultSender;
+            overlayGiftTitle.textContent = currentPayload.s;
+        }
+        
+        // Update game if active
+        if (game) {
+            game.setLanguage(lang);
+        }
+    }
+    
+    // ==========================================================================
     // INITIALIZATION & ROUTING
     // ==========================================================================
     function checkRoute() {
@@ -106,14 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     unlockVoucherSlot(char, charIndex);
                 },
                 onGameOver: () => {
-                    gameOverProgress.textContent = `${revealedCount} / 12 characters revealed`;
+                    gameOverProgress.textContent = TRANSLATIONS[currentLanguage].charactersRevealed.replace('{count}', revealedCount);
                     showModal(gameOverModal);
                 },
                 onWin: () => {
                     // Reveal all characters in victory screen
-                    victorySender.textContent = currentPayload.n ? `A Gift From ${currentPayload.n}` : 'A Special Gift For You';
+                    victorySender.textContent = currentPayload.n ? `${TRANSLATIONS[currentLanguage].giftFrom} ${currentPayload.n}` : TRANSLATIONS[currentLanguage].defaultSenderVictory;
                     victoryTitle.textContent = currentPayload.s;
-                    victoryMessage.textContent = currentPayload.m ? `"${currentPayload.m}"` : '"Enjoy your gift!"';
+                    victoryMessage.textContent = currentPayload.m ? `"${currentPayload.m}"` : `"${TRANSLATIONS[currentLanguage].defaultMessageVictory}"`;
                     finalCodeValue.textContent = currentPayload.c; // display fully formatted code
                     
                     showModal(victoryModal);
@@ -127,6 +282,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Generate blank/locked DOM slots for the code
         buildVoucherTrayDOM();
+        
+        // Sync active language to engine
+        game.setLanguage(currentLanguage);
         
         // Start level inside engine
         game.setupLevel(sanitizedCode);
@@ -184,10 +342,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset HUD displays
         hudGiftTitle.textContent = payload.s;
         
-        // Start overlay text
-        giftFromUser.textContent = payload.n || "A Friend";
-        overlayGiftTitle.textContent = payload.s;
-        overlayGiftMessage.textContent = payload.m ? `"${payload.m}"` : `"Break the bricks to unlock your voucher code!"`;
+        // Set language
+        setLanguage(payload.l || 'en');
         
         // Show start screen overlay
         gameStartOverlay.classList.remove('hidden');
@@ -216,7 +372,8 @@ document.addEventListener('DOMContentLoaded', () => {
             c: rawCode,
             s: giftStoreInput.value.trim(),
             n: giftSenderInput.value.trim(),
-            m: giftMessageInput.value.trim()
+            m: giftMessageInput.value.trim(),
+            l: giftLanguageSelect.value
         };
         
         const encoded = encodePayload(payload);
@@ -361,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     btnCopyFinal.addEventListener('click', () => {
-        copyTextToClipboard(currentPayload.c, btnCopyFinal, "Copy Code", "Copied!");
+        copyTextToClipboard(currentPayload.c, btnCopyFinal, TRANSLATIONS[currentLanguage].btnCopy, TRANSLATIONS[currentLanguage].copiedCodeBtn);
     });
     
     // ==========================================================================
@@ -472,4 +629,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     `;
     document.head.appendChild(style);
+
+    // Language buttons click event listeners
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            setLanguage(lang);
+        });
+    });
 });

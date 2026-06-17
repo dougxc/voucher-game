@@ -35,14 +35,25 @@
                     </div>
                 </div>
 
-                <div class="form-row split">
+                <div class="form-row">
                     <div class="form-group">
                         <label for="gift-store">Store / Gift Title <span class="required">*</span></label>
                         <input type="text" id="gift-store" placeholder="e.g. Amazon $50, Steam, Apple" required autocomplete="off">
                     </div>
+                </div>
+
+                <div class="form-row split">
                     <div class="form-group">
                         <label for="gift-sender">Your Name</label>
                         <input type="text" id="gift-sender" placeholder="e.g. Sarah, Dad & Mom" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="gift-language">Default Game Language</label>
+                        <select id="gift-language">
+                            <option value="en" selected>English</option>
+                            <option value="de">Deutsch (German)</option>
+                            <option value="ru">Русский (Russian)</option>
+                        </select>
                     </div>
                 </div>
 
@@ -88,19 +99,19 @@
         <section id="game-view" class="view-panel">
             <header class="game-hud">
                 <div class="hud-item flex-start">
-                    <div class="hud-label">STORE / GIFT</div>
+                    <div class="hud-label" data-i18n="hudStore">STORE / GIFT</div>
                     <div id="hud-gift-title" class="hud-value">Loading...</div>
                 </div>
                 <div class="hud-item flex-center">
-                    <div class="hud-label">SCORE</div>
+                    <div class="hud-label" data-i18n="hudScore">SCORE</div>
                     <div id="hud-score" class="hud-value numeric">0000</div>
                 </div>
                 <div class="hud-item flex-center">
-                    <div class="hud-label">BRICKS LEFT</div>
+                    <div class="hud-label" data-i18n="hudBricks">BRICKS LEFT</div>
                     <div id="hud-bricks" class="hud-value numeric">0</div>
                 </div>
                 <div class="hud-item flex-end">
-                    <div class="hud-label">LIVES</div>
+                    <div class="hud-label" data-i18n="hudLives">LIVES</div>
                     <div id="hud-lives" class="hud-value lives-container">
                         <!-- Lives icons will be populated by JS -->
                     </div>
@@ -114,27 +125,34 @@
                 <!-- Start Overlay -->
                 <div id="game-start-overlay" class="canvas-overlay">
                     <div class="overlay-content">
-                        <div class="sender-tag">A Gift From <span id="gift-from-user">Someone</span></div>
+                        <!-- Language selector on start screen -->
+                        <div class="start-language-selector">
+                            <button type="button" class="lang-btn" data-lang="en">EN</button>
+                            <button type="button" class="lang-btn" data-lang="de">DE</button>
+                            <button type="button" class="lang-btn" data-lang="ru">RU</button>
+                        </div>
+
+                        <div class="sender-tag"><span data-i18n="giftFrom">A Gift From</span> <span id="gift-from-user">Someone</span></div>
                         <h2 id="overlay-gift-title">AMAZON VOUCHER</h2>
                         <p id="overlay-gift-message" class="message-bubble">"Break the bricks to unlock your voucher code!"</p>
                         
                         <div class="instructions-card">
-                            <h3>How to Play:</h3>
+                            <h3 data-i18n="howToPlay">How to Play:</h3>
                             <div class="instruction-list">
                                 <div class="inst-item">
-                                    <span class="inst-control">← / →</span> or <span class="inst-control">Mouse / Touch</span> to move the paddle
+                                    <span class="inst-control">← / →</span> <span data-i18n="instMove">or Mouse / Touch to move the paddle</span>
                                 </div>
                                 <div class="inst-item">
-                                    <span class="inst-control">Space</span> or <span class="inst-control">Click</span> to launch ball / shoot lasers
+                                    <span class="inst-control">Space</span> <span data-i18n="instLaunch">or Click to launch ball / shoot lasers</span>
                                 </div>
                                 <div class="inst-item">
-                                    Catch falling items for glowing <span class="highlight">Power-Ups</span>!
+                                    <span data-i18n="instPowerupsPrefix">Catch falling items for glowing</span> <span class="highlight" data-i18n="instPowerupsHighlight">Power-Ups</span><span data-i18n="instPowerupsSuffix">!</span>
                                 </div>
                             </div>
                         </div>
 
                         <button id="btn-start-game" class="btn btn-primary btn-large">
-                            <span>Start Game</span>
+                            <span data-i18n="btnStart">Start Game</span>
                         </button>
                     </div>
                 </div>
@@ -147,7 +165,7 @@
 
             <!-- Voucher Code Tray -->
             <div class="voucher-tray-wrapper glass-card">
-                <div class="tray-title">YOUR VOUCHER CODE</div>
+                <div class="tray-title" data-i18n="trayTitle">YOUR VOUCHER CODE</div>
                 <div id="voucher-code-display" class="voucher-code-display">
                     <!-- 12 character slots -->
                     <div class="code-slot locked">?</div>
@@ -163,14 +181,14 @@
                     <div class="code-slot locked">?</div>
                     <div class="code-slot locked">?</div>
                 </div>
-                <div class="tray-tip">Break glowing letters in the grid to reveal code digits!</div>
+                <div class="tray-tip" id="tray-tip-el" data-i18n="trayTip">Break glowing letters in the grid to reveal code digits!</div>
             </div>
 
             <!-- In-game controls -->
             <footer class="game-footer">
                 <button id="btn-back-setup" class="btn btn-text">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                    <span>Back to Setup</span>
+                    <span data-i18n="btnBack">Back to Setup</span>
                 </button>
                 <div class="audio-control">
                     <button id="btn-toggle-sound" class="btn btn-icon" title="Toggle Sound">
@@ -188,21 +206,21 @@
     <div id="game-over-modal" class="modal-backdrop">
         <div class="modal-card glass-card warning">
             <div class="modal-header">
-                <div class="modal-badge warning">GAME OVER</div>
-                <h2>Almost Had It!</h2>
+                <div class="modal-badge warning" data-i18n="gameOverBadge">GAME OVER</div>
+                <h2 data-i18n="gameOverTitle">Almost Had It!</h2>
             </div>
             <div class="modal-body">
-                <p>Don't worry, you can try again! Or, since this is a gift, you can choose to reveal the voucher code directly.</p>
+                <p data-i18n="gameOverText">Don't worry, you can try again! Or, since this is a gift, you can choose to reveal the voucher code directly.</p>
                 <div class="revealed-progress">
-                    Revealed so far: <span id="game-over-progress" class="highlight">0 / 12 characters</span>
+                    <span data-i18n="revealedProgressLabel">Revealed so far:</span> <span id="game-over-progress" class="highlight">0 / 12 characters</span>
                 </div>
             </div>
             <div class="modal-footer">
                 <button id="btn-reveal-anyway" class="btn btn-tertiary">
-                    <span>Just Reveal Code</span>
+                    <span data-i18n="btnReveal">Just Reveal Code</span>
                 </button>
                 <button id="btn-retry-game" class="btn btn-primary">
-                    <span>Try Again</span>
+                    <span data-i18n="btnRetry">Try Again</span>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
                 </button>
             </div>
@@ -214,8 +232,8 @@
         <div class="modal-card glass-card victory">
             <div class="modal-confetti-anchor"></div>
             <div class="modal-header">
-                <div class="modal-badge victory">CONGRATULATIONS!</div>
-                <h2 class="glowing-text">Voucher Unlocked</h2>
+                <div class="modal-badge victory" data-i18n="victoryBadge">CONGRATULATIONS!</div>
+                <h2 class="glowing-text" data-i18n="victoryTitle">Voucher Unlocked</h2>
             </div>
             <div class="modal-body">
                 <div class="victory-gift-box">
@@ -228,17 +246,17 @@
 
                 <!-- Final Revealed Code -->
                 <div class="final-voucher-container glass-card">
-                    <div class="label">VOUCHER CODE</div>
+                    <div class="label" data-i18n="voucherCodeLabel">VOUCHER CODE</div>
                     <div id="final-code-value" class="code-value">AMZN-9B2F-92X1</div>
                     <button id="btn-copy-final" class="btn btn-secondary btn-small">
-                        <span class="btn-text">Copy Code</span>
+                        <span class="btn-text" data-i18n="btnCopy">Copy Code</span>
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     </button>
                 </div>
             </div>
             <div class="modal-footer">
                 <button id="btn-play-again" class="btn btn-primary">
-                    <span>Play Again</span>
+                    <span data-i18n="btnPlayAgain">Play Again</span>
                 </button>
             </div>
         </div>
