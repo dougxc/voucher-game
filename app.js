@@ -353,9 +353,27 @@ document.addEventListener('DOMContentLoaded', () => {
         initGameEngine(sanitizedCode);
     }
     
-    // ==========================================================================
-    // SETUP VIEW FORM & COPIER
-    // ==========================================================================
+    // Automatically clean voucher code input (remove spaces, cap at 12 characters)
+    giftCodeInput.addEventListener('input', () => {
+        const cursorPosition = giftCodeInput.selectionStart;
+        const originalValue = giftCodeInput.value;
+        
+        // Remove all whitespace
+        const cleanedValue = originalValue.replace(/\s+/g, '');
+        
+        // Limit to 12 characters
+        const truncatedValue = cleanedValue.slice(0, 12);
+        
+        if (originalValue !== truncatedValue) {
+            giftCodeInput.value = truncatedValue;
+            
+            // Adjust cursor position: count how many spaces were removed up to the cursor position
+            const spacesBeforeCursor = (originalValue.slice(0, cursorPosition).match(/\s/g) || []).length;
+            const newCursorPosition = Math.min(truncatedValue.length, Math.max(0, cursorPosition - spacesBeforeCursor));
+            giftCodeInput.setSelectionRange(newCursorPosition, newCursorPosition);
+        }
+    });
+
     setupForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
