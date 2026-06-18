@@ -51,6 +51,8 @@ class GameEngine {
         // Input tracking
         this.keys = {};
         this.pointerX = null;
+        this.touchLeftActive = false;
+        this.touchRightActive = false;
         
         // Powerup durations (ms)
         this.powerupDuration = {
@@ -253,6 +255,9 @@ class GameEngine {
         // Mouse/Touch controls
         const updatePointer = e => {
             if (this.state !== 'playing') return;
+            const isLandscapePhone = window.innerHeight <= 480 && window.innerWidth > window.innerHeight;
+            if (isLandscapePhone) return;
+
             const rect = this.canvas.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             this.pointerX = (clientX - rect.left) * (this.canvas.width / rect.width);
@@ -267,6 +272,45 @@ class GameEngine {
         this.canvas.addEventListener('click', () => {
             this.handleActionKey();
         });
+
+        // Global touch zone tracking for landscape mobile view
+        const handleLandscapeTouch = e => {
+            const isLandscapePhone = window.innerHeight <= 480 && window.innerWidth > window.innerHeight;
+            if (!isLandscapePhone || this.state !== 'playing') return;
+            
+            e.preventDefault();
+            
+            if (e.type === 'touchstart') {
+                const hasUnlaunchedBall = this.balls.some(b => !b.launched);
+                if (hasUnlaunchedBall) {
+                    this.handleActionKey();
+                }
+                
+                // Shoot lasers if active
+                const now = Date.now();
+                if (this.activePowerups.laser > now) {
+                    this.shootLasers();
+                }
+            }
+            
+            this.touchLeftActive = false;
+            this.touchRightActive = false;
+            
+            const midX = window.innerWidth / 2;
+            for (let i = 0; i < e.touches.length; i++) {
+                const touch = e.touches[i];
+                if (touch.clientX < midX) {
+                    this.touchLeftActive = true;
+                } else {
+                    this.touchRightActive = true;
+                }
+            }
+        };
+        
+        window.addEventListener('touchstart', handleLandscapeTouch, { passive: false });
+        window.addEventListener('touchmove', handleLandscapeTouch, { passive: false });
+        window.addEventListener('touchend', handleLandscapeTouch, { passive: false });
+        window.addEventListener('touchcancel', handleLandscapeTouch, { passive: false });
     }
     
     handleActionKey() {
@@ -446,7 +490,9 @@ class GameEngine {
         this.paddle.width = (this.activePowerups.wide > now) ? this.paddleWidthWide : this.paddleWidthNormal;
         
         // 2. Update paddle position
+        const isLandscapePhone = window.innerHeight <= 480 && window.innerWidth > window.innerHeight;
         const isKeyboardMoving = this.keys['ArrowLeft'] || this.keys['a'] || this.keys['ArrowRight'] || this.keys['d'];
+        
         if (isKeyboardMoving) {
             // Keyboard control takes precedence; reset pointerX so the paddle doesn't jump back when keys are released
             this.pointerX = null;
@@ -454,6 +500,15 @@ class GameEngine {
                 this.paddle.x -= this.paddle.speed;
             }
             if (this.keys['ArrowRight'] || this.keys['d']) {
+                this.paddle.x += this.paddle.speed;
+            }
+        } else if (isLandscapePhone) {
+            // In landscape phone layout, use left/right screen touch zones
+            this.pointerX = null; // Clear pointerX to prevent jump back when switching to portrait
+            if (this.touchLeftActive) {
+                this.paddle.x -= this.paddle.speed;
+            }
+            if (this.touchRightActive) {
                 this.paddle.x += this.paddle.speed;
             }
         } else if (this.pointerX !== null) {

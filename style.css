@@ -1043,3 +1043,107 @@ body {
     background: var(--bg-darker);
     color: var(--text-primary);
 }
+
+/* Media query targeting landscape phones (e.g. iPhone in landscape) */
+@media (max-height: 480px) and (orientation: landscape) {
+    /* Hide game setup elements that shouldn't show in play mode, HUD, footer, and labels */
+    .game-hud, 
+    .game-footer, 
+    .tray-title, 
+    .tray-tip,
+    .glow-orb {
+        display: none !important;
+    }
+
+    /* Reset layout containers to take full viewport space */
+    html, body {
+        overflow: hidden;
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    .app-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    #game-view {
+        width: 100vw !important;
+        height: 100vh !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        box-sizing: border-box !important;
+        padding: 8px !important;
+        background: #020105; /* Solid dark background to maximize play area contrast */
+    }
+
+    /* Canvas Wrapper fits full height of screen */
+    .canvas-wrapper {
+        flex: 1 !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        margin-bottom: 0 !important;
+        border: none !important;
+        border-radius: 6px !important;
+        overflow: hidden;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+    }
+
+    #game-canvas {
+        width: auto !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        aspect-ratio: 8 / 5 !important; /* matches width=800 height=500 */
+        margin: 0 auto !important;
+    }
+
+    /* Voucher Code Display turns into a vertical strip on the right side */
+    .voucher-tray-wrapper {
+        width: 45px !important;
+        height: 100% !important;
+        padding: 4px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        border: none !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: none !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        border-radius: 4px !important;
+    }
+
+    .voucher-code-display {
+        flex-direction: column !important;
+        gap: 2px !important;
+        height: 100% !important;
+        width: 100% !important;
+        justify-content: space-around !important;
+        margin-bottom: 0 !important;
+    }
+
+    .code-slot {
+        flex: 1 !important;
+        max-height: 28px !important;
+        width: 28px !important;
+        aspect-ratio: 1 / 1 !important;
+        font-size: 0.9rem !important;
+        border-radius: 4px !important;
+        box-sizing: border-box !important;
+    }
+}
